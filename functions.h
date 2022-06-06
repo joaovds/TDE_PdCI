@@ -2,9 +2,9 @@
 #define MENU_H
 
 struct RowData {
-  char cityName;
+  char cityName[50];
   int cases, deaths, population;
-  // float caseXPolulationRatio;
+  float caseXPolulationRatio;
 };
 
 void menu();
