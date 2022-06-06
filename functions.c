@@ -54,5 +54,34 @@ void menu() {
 
 void getColumnContentsInRow(char *rowContent, int *columns,
                             struct RowData *rowsData) {
-  printf("Hello\n");
+  int i = 0, j = columns[0], k = 0;
+  char *columnContent = strtok(strdup(rowContent), ";");
+
+  do {
+    switch (i) {
+    case 0:
+      strcpy(rowsData->cityName, columnContent);
+      break;
+    case 1:
+      rowsData->cases = atoi(columnContent);
+      break;
+    case 2:
+      rowsData->deaths = atoi(columnContent);
+      break;
+    case 3:
+      rowsData->population = atoi(columnContent);
+      break;
+    }
+
+    if ((rowsData->cases != 0) && (rowsData->population != 0))
+      rowsData->caseXPolulationRatio =
+          (float)rowsData->cases / rowsData->population;
+    else
+      rowsData->caseXPolulationRatio = 0;
+
+    columnContent = strtok(NULL, ";");
+
+    i++;
+    j = columns[i];
+  } while (i < sizeof(columns));
 }
