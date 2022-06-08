@@ -1,15 +1,15 @@
 #ifndef MENU_H
 #define MENU_H
 
-struct RowData {
+typedef struct {
   char cityName[50];
   int cases, deaths, population;
   float caseXPolulationRatio;
-};
+} RowData;
 
 void menu();
 
-void getColumnContentsInRow(char *rowContent, int *columns,
-                            struct RowData *rowsData);
+RowData getColumnContentsInRow(char *rowContent, int *columns,
+                               RowData rowsData);
 
 #endif

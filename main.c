@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
-  static struct RowData rowsData[540000];
+  static RowData rowsData[540000];
   FILE *file;
 
   if ((file = fopen("municipios.csv", "r")) == NULL) {
@@ -11,12 +11,13 @@ int main(int argc, char *argv[]) {
   };
 
   char rowContent[180];
-  int columns[] = {1, 4, 8, 17};
+  int columns[] = {1, 4, 8, 17}, i = 0;
 
   while (!feof(file)) {
     fgets(rowContent, 180, file);
 
-    getColumnContentsInRow(rowContent, columns, rowsData);
+    rowsData[i] = getColumnContentsInRow(rowContent, columns, rowsData[i]);
+    i++;
   }
 
   menu();
