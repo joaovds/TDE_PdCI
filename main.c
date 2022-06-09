@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     i++;
   }
 
-  menu();
+  menu(rowsData, i);
 
   return 0;
 }

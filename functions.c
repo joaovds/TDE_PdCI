@@ -12,7 +12,7 @@
 #include <windows.h>
 #endif
 
-void menu() {
+void menu(RowData rowsData[], int numberOfIndexes) {
   setlocale(LC_ALL, "Portuguese");
   int showMenu = 0;
 
@@ -39,7 +39,7 @@ void menu() {
 
     switch (showMenu) {
     case 1:
-      printf("salve\n");
+      sortCityName(rowsData, numberOfIndexes);
       break;
 
     case 0:
@@ -86,4 +86,15 @@ RowData getColumnContentsInRow(char *rowContent, int *columns,
   } while (i < sizeof(columns));
 
   return rowsData;
+}
+
+void sortCityName(RowData rowsData[], int numberOfIndexes) {
+  static RowData copyRowData[540000];
+  int i = 0;
+
+  memcpy(copyRowData, rowsData, sizeof(RowData) * 540000);
+
+  for (i = 0; i < numberOfIndexes; i++) {
+    printf("cidade %s \n", copyRowData[i].cityName);
+  }
 }

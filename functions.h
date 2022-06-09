@@ -7,9 +7,11 @@ typedef struct {
   float caseXPolulationRatio;
 } RowData;
 
-void menu();
+void menu(RowData rowsData[], int numberOfIndexes);
 
 RowData getColumnContentsInRow(char *rowContent, int *columns,
                                RowData rowsData);
+
+void sortCityName(RowData rowsData[], int numberOfIndexes);
 
 #endif
