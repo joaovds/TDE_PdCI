@@ -14,6 +14,7 @@
 
 void menu(RowData rowsData[], int numberOfIndexes) {
   setlocale(LC_ALL, "Portuguese");
+  static RowData sortedArray[540000], copyRowData[540000];
   int showMenu = 0;
 
   do {
@@ -39,7 +40,11 @@ void menu(RowData rowsData[], int numberOfIndexes) {
 
     switch (showMenu) {
     case 1:
-      sortCityName(rowsData, numberOfIndexes);
+      sortCityName(rowsData, copyRowData, numberOfIndexes);
+      int i;
+      for (i = 0; i < 100; i++) {
+        printf("Cidade: %s \n", copyRowData[i].cityName);
+      }
       break;
 
     case 0:
@@ -88,13 +93,30 @@ RowData getColumnContentsInRow(char *rowContent, int *columns,
   return rowsData;
 }
 
-void sortCityName(RowData rowsData[], int numberOfIndexes) {
-  static RowData copyRowData[540000];
-  int i = 0;
+void sortCityName(RowData rowsData[], RowData copyRowData[],
+                  int numberOfIndexes) {
+  RowData auxRowDataCopy, tranferirParaFrente;
+  int i = 0, j, k;
 
-  memcpy(copyRowData, rowsData, sizeof(RowData) * 540000);
+  for (i = 1; i < 100; i++) {
+    int indexDoOrdenando = i;
+    RowData ordenando = copyRowData[indexDoOrdenando];
 
-  for (i = 0; i < numberOfIndexes; i++) {
-    printf("cidade %s \n", copyRowData[i].cityName);
+    for (j = 0; j < 100; j++) {
+      if (strcmp(copyRowData[j].cityName, ordenando.cityName) > 0) {
+        auxRowDataCopy = copyRowData[j];
+
+        for (k = (numberOfIndexes - 1); k >= 0; k--) {
+          if ((k >= j) && (k < indexDoOrdenando)) {
+            copyRowData[k + 1] = copyRowData[k];
+          }
+        }
+
+        copyRowData[j] = ordenando;
+        break;
+      }
+    }
   }
+
+  printf("Vetor ordenado.. \n");
 }
