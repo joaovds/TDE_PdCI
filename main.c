@@ -1,6 +1,6 @@
 #include "functions.h"
 #include <stdio.h>
-
+//teste
 int main(int argc, char *argv[]) {
   static RowData rowsData[540000];
   FILE *file;
