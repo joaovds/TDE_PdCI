@@ -12,7 +12,7 @@ void menu(RowData rowsData[], int numberOfIndexes);
 RowData getColumnContentsInRow(char *rowContent, int *columns,
                                RowData rowsData);
 
-void sortCityName(RowData rowsData[], RowData sortedArray[],
+void sortCityName( RowData* sortedArray,
                   int numberOfIndexes);
 
 #endif

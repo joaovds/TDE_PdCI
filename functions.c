@@ -43,14 +43,16 @@ void menu(RowData rowsData[], int numberOfIndexes)
     switch (showMenu)
     {
     case 1:
-      sortCityName(rowsData, copyRowData, numberOfIndexes);
+
+      memcpy(copyRowData, rowsData, sizeof(sortedArray));
+      sortCityName(copyRowData, numberOfIndexes);
       int i;
 
-      for (i = 0; i < 100; i++)
+      for (i = 0; i < 10000; i++)
       {
-        printf("Cidade: %s \n", copyRowData[i].cityName);
-      }
 
+        printf("%s  %i\n", copyRowData[i].cityName, copyRowData[i].cases);
+      }
       break;
 
     case 0:
@@ -102,54 +104,53 @@ RowData getColumnContentsInRow(char *rowContent, int *columns,
   return rowsData;
 }
 
-void sortCityName(RowData rowsData[], RowData copyRowData[],
+void sortCityName(RowData *copyRowData,
                   int numberOfIndexes)
 {
-  copyRowData = rowsData;
-  int i = 0, j, k, x;
-  /*
-    for (i = 1; i < 540000; i++)
-    {
-      x = copyRowData[i].cases;
-      j = i - 1;
-      while ((j >= 0) && (copyRowData[j].cases > x))
-      {
-        copyRowData[j + 1].cases = copyRowData[j].cases;
-        j--;
-      }
-      copyRowData[j + 1].cases = x;
-      printf("%i  %i\n", copyRowData[i].cases, i);
-    }
+  int i = 0, j, k;
 
-
-
-
-  */
-  RowData auxRowDataCopy, tranferirParaFrente;
-
-  for (i = 1; i < 100; i++)
+  for (i = 1; i < 10000; i++)
   {
-    int indexDoOrdenando = i;
-    RowData ordenando = copyRowData[indexDoOrdenando];
+    RowData x = copyRowData[i];
+    j = i - 1;
 
-    for (j = 0; j < 100; j++)
+    while ((j >= 0) && (strcmp(copyRowData[j].cityName, x.cityName) > 0))
     {
-      if (strcmp(copyRowData[j].cityName, ordenando.cityName) > 0)
-      {
-        auxRowDataCopy = copyRowData[j];
-
-        for (k = (numberOfIndexes - 1); k >= 0; k--)
-        {
-          if ((k >= j) && (k < indexDoOrdenando))
-          {
-            copyRowData[k + 1] = copyRowData[k];
-          }
-        }
-
-        copyRowData[j] = ordenando;
-        break;
-      }
+      copyRowData[j + 1] = copyRowData[j];
+      j--;
     }
+    copyRowData[j + 1] = x;
   }
+
+  /*
+    RowData auxRowDataCopy, tranferirParaFrente;
+
+    for (i = 1; i < 100; i++)
+    {
+      int indexDoOrdenando = i;
+      RowData ordenando = copyRowData[indexDoOrdenando];
+
+      for (j = 0; j < 100; j++)
+      {
+        printf("%s - %s", );
+        if (strcmp(copyRowData[j].cityName, ordenando.cityName) > 0)
+        {
+          auxRowDataCopy = copyRowData[j];
+
+          for (k = (numberOfIndexes - 1); k >= 0; k--)
+          {
+            if ((k >= j) && (k < indexDoOrdenando))
+            {
+              copyRowData[k + 1] = copyRowData[k];
+            }
+          }
+
+          copyRowData[j] = ordenando;
+          break;
+        }
+      }
+      // printf("%s \n",copyRowData[i].cityName);
+    }
+    */
   printf("Vetor ordenado.. \n");
 }
