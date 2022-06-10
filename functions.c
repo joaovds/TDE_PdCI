@@ -12,14 +12,12 @@
 #include <windows.h>
 #endif
 
-void menu(RowData rowsData[], int numberOfIndexes)
-{
+void menu(RowData rowsData[], int numberOfIndexes) {
   setlocale(LC_ALL, "Portuguese");
   static RowData sortedArray[540000], copyRowData[540000];
   int showMenu = 0;
 
-  do
-  {
+  do {
     printf("|-----------------------------------------------------|\n");
     printf("|                         Menu                        |\n");
     printf("|-----------------------------------------------------|\n");
@@ -40,19 +38,18 @@ void menu(RowData rowsData[], int numberOfIndexes)
     system("clear");
 #endif
 
-    switch (showMenu)
-    {
+    switch (showMenu) {
     case 1:
-
       memcpy(copyRowData, rowsData, sizeof(sortedArray));
+
       sortCityName(copyRowData, numberOfIndexes);
+
       int i;
-
-      for (i = 0; i < 10000; i++)
-      {
-
+      for (i = 0; i < 10000; i++) {
         printf("%s  %i\n", copyRowData[i].cityName, copyRowData[i].cases);
       }
+
+      writeFileWithData(copyRowData, numberOfIndexes);
       break;
 
     case 0:
@@ -66,15 +63,12 @@ void menu(RowData rowsData[], int numberOfIndexes)
 }
 
 RowData getColumnContentsInRow(char *rowContent, int *columns,
-                               RowData rowsData)
-{
+                               RowData rowsData) {
   int i = 0, j = columns[0];
   char *columnContent = strtok(strdup(rowContent), ";");
 
-  do
-  {
-    switch (i)
-    {
+  do {
+    switch (i) {
     case 0:
       strcpy(rowsData.cityName, columnContent);
       break;
@@ -104,18 +98,44 @@ RowData getColumnContentsInRow(char *rowContent, int *columns,
   return rowsData;
 }
 
-void sortCityName(RowData *copyRowData,
-                  int numberOfIndexes)
-{
+int writeFileWithData(RowData data[], int numberOfIndexes) {
+  FILE *output;
+  char row[200], buffer[sizeof(int) * 8 + 1];
+  ;
+  int i;
+
+  output = fopen("output.csv", "w+");
+
+  if (output == NULL) {
+    printf("Erro ao tentar abrir o arquivo de saida !\n");
+    return 1;
+  }
+
+  for (i = 0; i < numberOfIndexes; i++) {
+    strcpy(row, data[i].cityName);
+    strcat(row, ",");
+    sprintf(buffer, "%i", data[numberOfIndexes].cases);
+    // strcat(row, data[i].cases);
+    strcat(row, "\n");
+
+    printf("nome %s \n", row);
+
+    fputs(row, output);
+  }
+
+  fclose(output);
+
+  return 0;
+}
+
+void sortCityName(RowData *copyRowData, int numberOfIndexes) {
   int i = 0, j, k;
 
-  for (i = 1; i < 10000; i++)
-  {
+  for (i = 1; i < 10000; i++) {
     RowData x = copyRowData[i];
     j = i - 1;
 
-    while ((j >= 0) && (strcmp(copyRowData[j].cityName, x.cityName) > 0))
-    {
+    while ((j >= 0) && (strcmp(copyRowData[j].cityName, x.cityName) > 0)) {
       copyRowData[j + 1] = copyRowData[j];
       j--;
     }
