@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     i++;
   }
 
-  menu(rowsData, i);
+  menu(rowsData, 520031);
 
   return 0;
 }
