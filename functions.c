@@ -43,16 +43,17 @@ void menu(RowData rowsData[], int numberOfIndexes)
     switch (showMenu)
     {
     case 1:
-
       memcpy(copyRowData, rowsData, sizeof(sortedArray));
+
       sortCityName(copyRowData, numberOfIndexes);
+
       int i;
-
-      for (i = 0; i < 10000; i++)
+      for (i = 0; i < 100000; i++)
       {
-
-        printf("%s  %i\n", copyRowData[i].cityName, copyRowData[i].cases);
+        printf("%s %i %i %i\n", copyRowData[i].cityName, copyRowData[i].cases, copyRowData[i].deaths, copyRowData[i].population);
       }
+
+      writeFileWithData(copyRowData, numberOfIndexes);
       break;
 
     case 0:
@@ -71,45 +72,78 @@ RowData getColumnContentsInRow(char *rowContent, int *columns,
   int i = 0, j = columns[0];
   char *columnContent = strtok(strdup(rowContent), ";");
 
-  do
-  {
-    switch (i)
-    {
-    case 0:
-      strcpy(rowsData.cityName, columnContent);
-      break;
-    case 1:
-      rowsData.cases = atoi(columnContent);
-      break;
-    case 2:
-      rowsData.deaths = atoi(columnContent);
-      break;
-    case 3:
-      rowsData.population = atoi(columnContent);
-      break;
-    }
+  strcpy(rowsData.cityName, columnContent);
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  columnContent = strtok(NULL, ";");
 
-    if ((rowsData.cases != 0) && (rowsData.population != 0))
-      rowsData.caseXPolulationRatio =
-          (float)rowsData.cases / rowsData.population;
-    else
-      rowsData.caseXPolulationRatio = 0;
+  rowsData.cases = atoi(columnContent);
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  columnContent = strtok(NULL, ";");
+  rowsData.deaths = atoi(columnContent);
 
-    columnContent = strtok(NULL, ";");
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  strtok(NULL, ";");
+  columnContent = strtok(NULL, ";");
+  rowsData.population = atoi(columnContent);
 
-    i++;
-    j = columns[i];
-  } while (i < sizeof(columns));
+  if ((rowsData.cases != 0) && (rowsData.population != 0))
+    rowsData.caseXPolulationRatio =
+        (float)rowsData.cases / rowsData.population;
+  else
+    rowsData.caseXPolulationRatio = 0;
+
+  i++;
+  j = columns[i];
 
   return rowsData;
 }
 
-void sortCityName(RowData *copyRowData,
-                  int numberOfIndexes)
+int writeFileWithData(RowData data[], int numberOfIndexes)
+{
+  FILE *output;
+  char row[200], buffer[sizeof(int) * 8 + 1];
+  ;
+  int i;
+
+  output = fopen("output.csv", "w+");
+
+  if (output == NULL)
+  {
+    printf("Erro ao tentar abrir o arquivo de saida !\n");
+    return 1;
+  }
+
+  for (i = 0; i < numberOfIndexes; i++)
+  {
+    strcpy(row, data[i].cityName);
+    strcat(row, ",");
+    sprintf(buffer, "%i", data[numberOfIndexes].cases);
+    // strcat(row, data[i].cases);
+    strcat(row, "\n");
+
+
+    fputs(row, output);
+  }
+
+  fclose(output);
+
+  return 0;
+}
+
+void sortCityName(RowData *copyRowData, int numberOfIndexes)
 {
   int i = 0, j, k;
 
-  for (i = 1; i < 10000; i++)
+  for (i = 1; i < 100000; i++)
   {
     RowData x = copyRowData[i];
     j = i - 1;
